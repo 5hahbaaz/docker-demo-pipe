@@ -10,7 +10,7 @@ pipeline {
 
         stage('build docker image'){
             steps {                
-                powershell "docker 5hahbaaz/DEVImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
+                powershell "docker -t 5hahbaaz/DEVImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
                   }
         }
 
