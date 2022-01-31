@@ -10,7 +10,7 @@ pipeline {
 
         stage('build docker image'){
             steps {                
-                powershell "docker build -t 5hahbaaz/MasterImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
+                powershell "docker build -t 5hahbaaz/masterbuild:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
                   }
         }
 
@@ -35,7 +35,7 @@ pipeline {
 
         stage('push to docker hub'){
            steps {
-                powershell "docker push 5hahbaaz/MasterImage:${BUILD_NUMBER}"     
+                powershell "docker push 5hahbaaz/masterbuild:${BUILD_NUMBER}"     
            }
         }
   
