@@ -1,4 +1,4 @@
-apipeline {
+pipeline {
     agent any
 
     stages {
@@ -10,7 +10,7 @@ apipeline {
 
         stage('build docker image'){
             steps {                
-                powershell "docker build -t 5hahbaaz/devbuild:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
+                powershell "docker 5hahbaaz/devimage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
                   }
         }
 
@@ -30,7 +30,7 @@ apipeline {
 
         stage('push to docker hub'){
            steps {
-                powershell "docker push 5hahbaaz/devbuild:${BUILD_NUMBER}"     
+                powershell "docker push 5hahbaaz/devimage:${BUILD_NUMBER}"     
            }
         }
   
@@ -42,7 +42,7 @@ apipeline {
         stage('remove docker image from system'){
             steps {                
 //                powershell "docker rmi 5hahbaaz/sampleimage:${BUILD_NUMBER}" //$BUILD_NUMBER is being used as tag for the image
-                powershell "docker rmi 5hahbaaz/DEVImage:${BUILD_NUMBER}"
+                powershell "docker rmi 5hahbaaz/devimage:${BUILD_NUMBER}"
                   }
         }
     }
