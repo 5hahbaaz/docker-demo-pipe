@@ -1,4 +1,4 @@
-pipeline {
+apipeline {
     agent any
 
     stages {
@@ -10,7 +10,7 @@ pipeline {
 
         stage('build docker image'){
             steps {                
-                powershell "docker build -t 5hahbaaz/DEVImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
+                powershell "docker build -t 5hahbaaz/devbuild:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
                   }
         }
 
@@ -30,7 +30,7 @@ pipeline {
 
         stage('push to docker hub'){
            steps {
-                powershell "docker push 5hahbaaz/DEVImage:${BUILD_NUMBER}"     
+                powershell "docker push 5hahbaaz/devbuild:${BUILD_NUMBER}"     
            }
         }
   
