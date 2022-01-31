@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('git clone') {
             steps {
-                git 'https://github.com/5hahbaaz/docker-demo-pipe.git'
+                git branch: 'dev', url: 'https://github.com/5hahbaaz/docker-demo-pipe.git'
                   }
         }
 
         stage('build docker image'){
             steps {                
-                powershell "docker build  5hahbaaz/MasterImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
+                powershell "docker 5hahbaaz/DEVImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
                   }
         }
 
@@ -21,12 +21,7 @@ pipeline {
                 // powershell "docker login -u 5hahbaaz -p ${Password}"        //use "" for groovy interpolation
 
                 withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'P', usernameVariable: 'U')]) {
-                    powershell "docker login -u ${U} -p ${P}"  
-                }
-                
-                
-                //powershell "echo ${Password} | docker login --username 5hahbaaz --password-stdin"    //shows error
-
+                    powershell "docker login -u ${U} -p ${P}" 
                 }
                 
                 powershell 'echo "login successful"' 
@@ -35,7 +30,7 @@ pipeline {
 
         stage('push to docker hub'){
            steps {
-                powershell "docker push 5hahbaaz/MasterImage:${BUILD_NUMBER}"     
+                powershell "docker push 5hahbaaz/DEVImage:${BUILD_NUMBER}"     
            }
         }
   
@@ -47,7 +42,7 @@ pipeline {
         stage('remove docker image from system'){
             steps {                
 //                powershell "docker rmi 5hahbaaz/sampleimage:${BUILD_NUMBER}" //$BUILD_NUMBER is being used as tag for the image
-                powershell "docker rmi 5hahbaaz/MasterImage:${BUILD_NUMBER}"
+                powershell "docker rmi 5hahbaaz/DEVImage:${BUILD_NUMBER}"
                   }
         }
     }
