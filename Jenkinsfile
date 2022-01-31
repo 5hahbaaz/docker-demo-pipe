@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-  CRED = "DockerHub"
+  CRED = credentials('DockerHub')
 }
 
     stages {
@@ -25,7 +25,8 @@ pipeline {
                 // powershell "docker login -u 5hahbaaz -p ${Password}"        //use "" for groovy interpolation
 
                 // withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'P', usernameVariable: 'U')]) {}
-                    powershell "docker login -u ${DockerHub_USR} -p ${DockerHub_PSW}   https://hub.docker.com/"  
+                   powershell "docker login -u ${DockerHub_USR} -p ${DockerHub_PSW}   https://hub.docker.com/"  
+               
                 
                 
                 //powershell "echo ${Password} | docker login --username 5hahbaaz --password-stdin"    //shows error
