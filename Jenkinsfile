@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+  CRED = "DockerHub"
+}
+
     stages {
         stage('git clone') {
             steps {
@@ -20,9 +24,8 @@ pipeline {
                     
                 // powershell "docker login -u 5hahbaaz -p ${Password}"        //use "" for groovy interpolation
 
-                withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'P', usernameVariable: 'U')]) {
-                    powershell "docker login -u ${U} -p ${P}"  
-                }
+                // withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'P', usernameVariable: 'U')]) {}
+                    powershell "docker login -u ${DockerHub_USR} -p ${DockerHub_PSW}"  
                 
                 
                 //powershell "echo ${Password} | docker login --username 5hahbaaz --password-stdin"    //shows error
@@ -44,7 +47,7 @@ pipeline {
         }
         stage('remove docker image from system'){
             steps {                
-//                powershell "docker rmi 5hahbaaz/sampleimage:${BUILD_NUMBER}" //$BUILD_NUMBER is being used as tag for the image
+            //    powershell "docker rmi 5hahbaaz/sampleimage:${BUILD_NUMBER}" //$BUILD_NUMBER is being used as tag for the image
                 powershell "docker rmi 5hahbaaz/masterimage:${BUILD_NUMBER}"
                   }
         }
