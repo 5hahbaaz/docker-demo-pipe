@@ -45,7 +45,7 @@ pipeline {
         stage('remove docker image from system'){
             steps {                
 //                powershell "docker rmi 5hahbaaz/sampleimage:${BUILD_NUMBER}" //$BUILD_NUMBER is being used as tag for the image
-                powershell "docker rmi 5hahbaaz/MasterImage:${BUILD_NUMBER}"
+                powershell "docker rmi 5hahbaaz/masterimage:${BUILD_NUMBER}"
                   }
         }
     }
