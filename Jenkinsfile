@@ -10,7 +10,7 @@ pipeline {
 
         stage('build docker image'){
             steps {                
-                powershell "docker build -t 5hahbaaz/masterbuild:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
+                powershell "docker build  5hahbaaz/MasterImage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
                   }
         }
 
@@ -26,8 +26,6 @@ pipeline {
                 
                 
                 //powershell "echo ${Password} | docker login --username 5hahbaaz --password-stdin"    //shows error
-
-                }
                 
                 powershell 'echo "login successful"' 
            }
@@ -35,7 +33,7 @@ pipeline {
 
         stage('push to docker hub'){
            steps {
-                powershell "docker push 5hahbaaz/masterbuild:${BUILD_NUMBER}"     
+                powershell "docker push 5hahbaaz/MasterImage:${BUILD_NUMBER}"     
            }
         }
   
