@@ -25,7 +25,7 @@ pipeline {
                 // powershell "docker login -u 5hahbaaz -p ${Password}"        //use "" for groovy interpolation
 
                 // withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'P', usernameVariable: 'U')]) {}
-                   powershell 'docker login -u $DockerHub_USR -p $DockerHub_PSW https://login.docker.com/u/login/identifier?state=hKFo2SB1TFRnRmxWSHFWYUk3TEx3aGJ4aUJZclFZNDU4Zjk1aaFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIDZCZWNDWWpOMFdUYWpfY09GV1NNUzViTlNCYjlvem1No2NpZNkgbHZlOUdHbDhKdFNVcm5lUTFFVnVDMGxiakhkaTluYjk'  
+                   powershell 'docker login -u $DockerHub_USR -p $DockerHub_PSW'
               
                 
                 
