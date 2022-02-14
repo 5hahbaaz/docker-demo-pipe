@@ -22,4 +22,5 @@ pipeline{
                 powershell 'echo "hello"'
                   }
         } 
+    }     
 }
