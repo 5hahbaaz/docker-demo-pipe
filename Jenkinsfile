@@ -1,56 +1,54 @@
-pipeline {
+pipeline{
     agent any
 
-    environment {
-  CRED = credentials('DockerHub')
-            }
-
-    stages {
-        stage('git clone') {
-            steps {
-                git 'https://github.com/5hahbaaz/docker-demo-pipe.git'
-                  }
-        }
-
-        stage('build docker image'){
-            steps {                
-                powershell "docker build -t 5hahbaaz/masterimage:${BUILD_NUMBER} ." //$BUILD_NUMBER is being used as tag for the image
-                  }
-        }
-
-        stage('log in to docker hub'){
-           steps {
-                // withCredentials([string(credentialsId: '599fc82b-b9f8-4c87-86c4-3fc985ad6c1d', variable: 'Password')]) {
-                    
-                // powershell "docker login -u 5hahbaaz -p ${Password}"        //use "" for groovy interpolation
-
-                // withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'P', usernameVariable: 'U')]) {}
-                   powershell 'docker login -u $DockerHub_USR -p $DockerHub_PSW dockerregistry.cloud.remote'
-              
-                
-                
-                //powershell "echo ${Password} | docker login --username 5hahbaaz --password-stdin"    //shows error
-                
-                powershell 'echo "login successful"' 
-           }
-        }
-
-        stage('push to docker hub'){
-           steps {
-                powershell "docker push 5hahbaaz/masterimage:${BUILD_NUMBER}"     
-           }
-        }
-  
-        stage('log out of docker hub'){
-           steps {
-                powershell 'docker logout'     
-           }
-        }
-        stage('remove docker image from system'){
-            steps {                
-            //    powershell "docker rmi 5hahbaaz/sampleimage:${BUILD_NUMBER}" //$BUILD_NUMBER is being used as tag for the image
-                powershell "docker rmi 5hahbaaz/masterimage:${BUILD_NUMBER}"
-                  }
-        }
+    environment{
+     //docker parameters   
+        pathofdockerfile='.'                                //dockerfile path 
+     //tagging the image   
+        registry= 'hedgeness/oauth-server'                //registry
+        version= ''                                       //version of the the image
     }
-}    
+
+    stages{
+
+        stage('git check') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [[$class: 'PathRestriction', excludedRegions: '', includedRegions: 'Jenkinsfile']], userRemoteConfigs: [[credentialsId: 'Github-Cred', url: 'https://github.com/hedgeness/oauth-server.git']]])
+                  }
+        }
+
+        stage('build image') {
+            steps {
+                sh "docker build ${pathofdockerfile} -t ${registry}:${version}"
+                  }
+        }
+
+        stage('login in to Dockerhub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'Dockerhub', passwordVariable: 'P', usernameVariable: 'U')]) {
+                 sh "docker login -u ${U} -p ${P}"
+                 //sh 'echo $P | docker login --username $U --password-stdin'
+                    }
+                  }
+        }
+
+        stage('Push to Dockerhub') {
+            steps {
+                 sh "docker push ${registry}:${version}"
+                  }
+        }
+
+        stage('remove local image') {
+            steps {
+                 sh "docker rmi ${registry}:${version}"
+                  }
+        }      
+
+    }
+    post {
+            always {
+                sh 'docker logout'
+            }
+    }  
+
+}
